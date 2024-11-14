@@ -1,0 +1,11 @@
+kind: gvc
+name: terraform-testing
+description: terraform-testing
+tags: {}
+spec:
+  loadBalancer:
+    dedicated: false
+    trustedProxies: 0
+  staticPlacement:
+    locationLinks:
+      - //location/aws-eu-central-1

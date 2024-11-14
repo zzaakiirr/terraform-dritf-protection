@@ -1,0 +1,24 @@
+name: Terraform drift protection
+
+on:
+  pull_request:
+
+env:
+  TF_CLOUD_ORGANIZATION: "${{ secrets.TF_CLOUD_ORGANIZATION }}"
+  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+  TF_WORKSPACE: "${{ secrets.TF_WORKSPACE }}"
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+    name: Terraform drift protection
+    steps:
+      - uses: hashicorp/setup-terraform@v3
+      - name: Terraform Plan
+        run: |
+          cd terraform/tetris
+          terraform init
+          terraform plan -out plan
+          terraform show -no-color -json plan > plan.json
+      - name: Validate terraform plan
+        run: ./check_infrastructure_destroys.sh
